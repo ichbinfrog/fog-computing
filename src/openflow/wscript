@@ -9,7 +9,7 @@ def options(opt):
                    help=('Path to OFSID source for NS-3 OpenFlow Integration support'),
                    default='', dest='with_openflow')
 
-REQUIRED_BOOST_LIBS = ['system', 'signals', 'filesystem']
+REQUIRED_BOOST_LIBS = ['system', 'filesystem']
 
 def required_boost_libs(conf):
     conf.env['REQUIRED_BOOST_LIBS'] += REQUIRED_BOOST_LIBS
