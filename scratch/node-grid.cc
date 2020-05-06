@@ -1,9 +1,9 @@
 
-#import "ns3/core-module.h"
-#import "ns3/network-module.h"
-#import "ns3/point-to-point-module.h"
-#import "ns3/point-to-point-layout-module.h"
-#import "ns3/ndnSIM-module.h"
+#include "ns3/core-module.h"
+#include "ns3/network-module.h"
+#include "ns3/point-to-point-module.h"
+#include "ns3/point-to-point-layout-module.h"
+#include "ns3/ndnSIM-module.h"
 
 namespace ns3 {
 
