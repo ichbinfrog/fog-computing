@@ -1,0 +1,128 @@
+router
+
+# node  	comment     yPos    xPos
+Consumer1	NA			1		1
+Consumer2 	NA 			14 		1
+Consumer3 	NA 			14 		14
+Consumer4 	NA 			1 		14
+Consumer5 	NA 			14 		7
+Ndn1 		NA 			2		2
+Ndn2 		NA			3		2 			
+Ndn3 		NA			4		2
+Ndn4 		NA			5		2
+Ndn5 		NA			6		2
+Ndn6 		NA			7		2
+Ndn7 		NA			8		2
+Ndn8 		NA			9		2
+Ndn9 		NA			10		2
+Ndn10		NA			11		2
+Ndn11		NA			12		2
+Ndn12		NA			13		2
+Ndn13		NA			13		3 			
+Ndn14		NA			13		4 			
+Ndn15		NA			13		5 			
+Ndn16		NA			13		6 
+Ndn17		NA			13		7
+Ndn18		NA			13		8
+Ndn19		NA			13		9
+Ndn20		NA			13		10
+Ndn21		NA			13		11
+Ndn22		NA			13		12
+Ndn23		NA			13		13
+Ndn24		NA			12		13
+Ndn25		NA			11		13
+Ndn26		NA			10		13
+Ndn27		NA			9		13
+Ndn28		NA			8		13
+Ndn29		NA			7		13
+Ndn30		NA			6		13
+Ndn31		NA			5		13
+Ndn32		NA			4		13
+Ndn33		NA			3		13
+Ndn34		NA			2		13
+Ndn35		NA			2		12
+Ndn36		NA			2		11
+Ndn37		NA			2		10
+Ndn38		NA			2		9
+Ndn39		NA			2		8
+Ndn40		NA			2		7
+Ndn41		NA			2		6
+Ndn42		NA			2		5
+Ndn43		NA			2		4
+Ndn44		NA			2		3
+Fog1		NA			7 		7
+Fog2		NA 			9 		7
+Fog3		NA			9 		9
+Fog4		NA 			7 		9
+Fog5		NA			8 		8
+		
+
+
+link
+
+# x 		y       capacity(kbps)  OSPF    Delay   MaxPackets
+Ndn1    	Ndn2	5Mbps 			1 		50ms 	20					 
+Ndn2    	Ndn3	5Mbps			1 		50ms 	20
+Ndn3    	Ndn4	5Mbps			1 		50ms 	20
+Ndn4    	Ndn5	5Mbps			1 		50ms 	20
+Ndn5    	Ndn6	5Mbps			1 		50ms 	20
+Ndn6    	Ndn7	5Mbps			1 		50ms 	20
+Ndn7    	Ndn8	5Mbps			1 		50ms 	20
+Ndn8    	Ndn9	5Mbps			1 		50ms 	20
+Ndn9    	Ndn10	5Mbps			1 		50ms 	20
+Ndn10   	Ndn11	5Mbps			1 		50ms 	20
+Ndn11   	Ndn12	5Mbps			1 		50ms 	20
+Ndn12   	Ndn13	5Mbps			1 		50ms 	20
+Ndn13   	Ndn14	5Mbps			1 		50ms 	20
+Ndn14   	Ndn15	5Mbps			1 		50ms 	20
+Ndn15   	Ndn16	5Mbps			1 		50ms 	20
+Ndn16   	Ndn17	5Mbps			1 		50ms 	20
+Ndn17   	Ndn18	5Mbps			1 		50ms 	20
+Ndn18   	Ndn19	5Mbps			1 		50ms 	20
+Ndn19   	Ndn20	5Mbps			1 		50ms 	20
+Ndn20   	Ndn21	5Mbps			1 		50ms 	20
+Ndn21   	Ndn22	5Mbps			1 		50ms 	20
+Ndn22   	Ndn23	5Mbps			1 		50ms 	20
+Ndn23   	Ndn24	5Mbps			1 		50ms 	20
+Ndn24   	Ndn25	5Mbps			1 		50ms 	20
+Ndn25   	Ndn26	5Mbps			1 		50ms 	20
+Ndn26   	Ndn27	5Mbps			1 		50ms 	20
+Ndn27   	Ndn28	5Mbps			1 		50ms 	20
+Ndn28   	Ndn29	5Mbps			1 		50ms 	20
+Ndn29   	Ndn30	5Mbps			1 		50ms 	20
+Ndn30   	Ndn31	5Mbps			1 		50ms 	20
+Ndn31   	Ndn32	5Mbps			1 		50ms 	20
+Ndn32   	Ndn32	5Mbps			1 		50ms 	20
+Ndn33   	Ndn34	5Mbps			1 		50ms 	20
+Ndn34 		Ndn35	5Mbps			1 		50ms 	20
+Ndn35 		Ndn36	5Mbps			1 		50ms 	20
+Ndn36		Ndn37	5Mbps			1 		50ms 	20
+Ndn37 		Ndn38	5Mbps			1 		50ms 	20
+Ndn38 		Ndn39	5Mbps			1 		50ms 	20
+Ndn39 		Ndn40	5Mbps			1 		50ms 	20
+Ndn40 		Ndn41	5Mbps			1 		50ms 	20
+Ndn41 		Ndn42	5Mbps			1 		50ms 	20
+Ndn42 		Ndn43	5Mbps			1		50ms	20		
+Ndn43 		Ndn44	5Mbps			1		50ms	20
+Ndn44 		Ndn1 	5Mbps			1		50ms	20
+Consumer1 	Ndn1 	1Mbps			1		50ms 	20		
+Consumer2 	Ndn12	1Mbps			1		50ms 	20
+Consumer3 	Ndn23	1Mbps			1		50ms 	20
+Consumer4 	Ndn34	1Mbps			1		50ms 	20
+Consumer5 	Ndn17	1Mbps			1		50ms 	20
+Fog1 		Fog2 	10Mbps			1		20ms	200		
+Fog1 		Fog5	10Mbps			1		20ms	200
+Fog1 		Ndn6	5Mbps			1		20ms	200
+Fog1 		Ndn40	5Mbps			1		20ms	200
+Fog2 		Fog3	10Mbps			1		20ms	200
+Fog2 		Fog5	10Mbps			1		20ms	200
+Fog2 		Ndn8	5Mbps			1		20ms	200
+Fog2 		Ndn17 	5Mbps			1		20ms	200
+Fog3 		Fog4	10Mbps			1		20ms	200
+Fog3 		Fog5	10Mbps			1		20ms	200
+Fog3 		Ndn19 	5Mbps			1		20ms	200
+Fog3 		Ndn27 	5Mbps			1		20ms	200
+Fog4 		Fog5 	10Mbps			1		20ms	200
+Fog4 		Ndn29 	5Mbps			1		20ms	200
+Fog4 		Ndn38 	5Mbps			1		20ms	200
+
