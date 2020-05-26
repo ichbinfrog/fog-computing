@@ -6,25 +6,21 @@
 namespace ns3{
 	int main(int argc, char *argv[])
 	{
-		/*
+
 		CommandLine cmd;
 		cmd.Parse(argc, argv);
-		ns3::AnnotatedTopologyReader::AnnotatedTopologyReader(
-			const std::string &path = "/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt",
-			double scale = 1.0
-		);
-		*/
 
-		ns3::AnnotatedTopologyReader topoReader("/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt", 1);
+
+		AnnotatedTopologyReader topoReader("/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt", 1);
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
-		ndnHelper.InstallAll();
 		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
+		ndnHelper.InstallAll();
 		ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
 
 
-		ns3::ndn::AppHelper producerHelper("ns3::ndn::Producer");
+		ndn::AppHelper producerHelper("ns3::ndn::Producer");
 
 		Ptr<Node> producers[49] = {
 			Names::Find<Node>("Ndn1"),
@@ -85,7 +81,7 @@ namespace ns3{
 		}
 
 
-		ns3::ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
+		ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
 
 		Ptr<Node> consumers[5] = {
 			Names::Find<Node>("Consumer1"),
@@ -101,7 +97,7 @@ namespace ns3{
 			consumerHelper.Install(csm);
 		}
 
-		ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
+		//ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
 
 		ndn::GlobalRoutingHelper::CalculateRoutes();		
 		ndn::L3RateTracer::InstallAll("demo-trace.txt", Seconds(0.5));
