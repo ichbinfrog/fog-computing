@@ -2,6 +2,8 @@
 #include "ns3/network-module.h"
 #include "ns3/ndnSIM-module.h"
 
+#include <iostream>
+
 
 namespace ns3{
 	int main(int argc, char *argv[])
@@ -11,7 +13,8 @@ namespace ns3{
 		cmd.Parse(argc, argv);
 
 
-		AnnotatedTopologyReader topoReader("/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt", 1);
+		AnnotatedTopologyReader topoReader("", 1);
+		topoReader.SetFileName("/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt");
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
@@ -74,6 +77,14 @@ namespace ns3{
 			Names::Find<Node>("Fog5")
 		};
 
+		NodeContainer nodeContainer;
+		for(int i=44;i<49;i++) {
+			nodeContainer.Add(producers[i]);
+		}
+
+		ndnHelper.setCsSize(30);
+		ndnHelper.Install(nodeContainer);
+
 		for (auto prd : producers){
 			producerHelper.SetPrefix("/root/" + Names::FindName(prd));
 			producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
@@ -91,6 +102,7 @@ namespace ns3{
 			Names::Find<Node>("Consumer5")
 		};
 
+
 		for(auto csm : consumers){
 			consumerHelper.SetPrefix("/root/" + Names::FindName(csm));
 			consumerHelper.SetAttribute("Frequency", StringValue("60"));
@@ -100,7 +112,7 @@ namespace ns3{
 		//ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
 
 		ndn::GlobalRoutingHelper::CalculateRoutes();		
-		ndn::L3RateTracer::InstallAll("demo-trace.txt", Seconds(0.5));
+		ndn::L3RateTracer::InstallAll("test-trace.txt", Seconds(0.5));
 
 		Simulator::Stop(Seconds(20.0));
 		Simulator::Run();
