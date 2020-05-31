@@ -3,6 +3,7 @@
 #include "ns3/ndnSIM-module.h"
 
 #include <iostream>
+#include <typeinfo>
 
 
 namespace ns3{
@@ -18,8 +19,29 @@ namespace ns3{
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
+		//ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
+		//ndnHelper.InstallAll();
+
 		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
-		ndnHelper.InstallAll();
+		for(int i=0;i<44;i++) {
+			Ptr<Node> node = Names::Find<Node>("Ndn"+std::to_string(i+1));
+			ndnHelper.Install(node);
+		}
+		ndnHelper.Install(Names::Find<Node>("Consumer1"));
+		ndnHelper.Install(Names::Find<Node>("Consumer2"));
+		ndnHelper.Install(Names::Find<Node>("Consumer3"));
+		ndnHelper.Install(Names::Find<Node>("Consumer4"));
+		ndnHelper.Install(Names::Find<Node>("Consumer5"));
+
+
+		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "30");
+		ndnHelper.Install(Names::Find<Node>("Fog1"));
+		ndnHelper.Install(Names::Find<Node>("Fog2"));
+		ndnHelper.Install(Names::Find<Node>("Fog3"));
+		ndnHelper.Install(Names::Find<Node>("Fog4"));
+		ndnHelper.Install(Names::Find<Node>("Fog5"));
+
+
 		ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
 
 
@@ -77,13 +99,6 @@ namespace ns3{
 			Names::Find<Node>("Fog5")
 		};
 
-		NodeContainer nodeContainer;
-		for(int i=44;i<49;i++) {
-			nodeContainer.Add(producers[i]);
-		}
-
-		ndnHelper.setCsSize(30);
-		ndnHelper.Install(nodeContainer);
 
 		for (auto prd : producers){
 			producerHelper.SetPrefix("/root/" + Names::FindName(prd));
@@ -109,12 +124,12 @@ namespace ns3{
 			consumerHelper.Install(csm);
 		}
 
-		//ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
-
 		ndn::GlobalRoutingHelper::CalculateRoutes();		
-		ndn::L3RateTracer::InstallAll("test-trace.txt", Seconds(0.5));
+		//ndn::L3RateTracer::InstallAll("test-trace.txt", Seconds(0.5));
+		ndn::AppDelayTracer::InstallAll("app-delays-trace.txt");
+		ndn::CsTracer::InstallAll("cs-trace.txt", Seconds(1));
 
-		Simulator::Stop(Seconds(20.0));
+		Simulator::Stop(Seconds(50.0));
 		Simulator::Run();
 		Simulator::Destroy();
 
