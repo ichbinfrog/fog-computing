@@ -66,8 +66,8 @@ namespace ns3{
 		}
 
 		ndn::GlobalRoutingHelper::CalculateRoutes();		
-		ndn::AppDelayTracer::InstallAll("app-delays-trace.txt");
-		ndn::CsTracer::InstallAll("cs-trace.txt", Seconds(0.5));
+		ndn::AppDelayTracer::InstallAll("benchmark/out/app-delays-trace.txt");
+		ndn::CsTracer::InstallAll("benchmark/out/cs-trace.txt", Seconds(0.5));
 
 		Simulator::Stop(Seconds(50.0));
 		Simulator::Run();
