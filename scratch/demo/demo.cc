@@ -18,8 +18,6 @@ namespace ns3{
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
-		//ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
-		//ndnHelper.InstallAll();
 		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
 
 		NodeContainer routers;

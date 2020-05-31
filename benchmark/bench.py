@@ -24,19 +24,16 @@ class ContentStore(Reader):
         self.data_["NodeType"] = self.data_["Node"].str.replace("\d+", "")
         self.data_["NodeNumber"] = self.data_["Node"].str.replace("[a-zA-Z]+", "")
 
-    def lineplot(
-        self,
-        x="Time",
-        y="Packets",
-        hue="NodeNumber",
-        nodeType="Consumer",
-        cacheType="Miss",
-    ):
-        return sns.lineplot(
-            x=x,
-            y=y,
-            hue=hue,
-            data=self.data_[
-                (self.data_["NodeType"] == nodeType) & (self.data_["Type"] == cacheType)
-            ],
+
+class AppDelay(Reader):
+    """Implémentation du Reader pour les AppDelay Tracer"""
+
+    def __init__(self, files, sep="\s+", header="infer"):
+        super().__init__(files, sep, header)
+        super().read(join=True)
+        
+        self.data_["NodeType"] = self.data_["Node"].str.replace("\d+", "")
+        self.data_["Type"] = (
+            self.data_["Type"]
+            .str.replace("Delay", "")
         )
