@@ -15,7 +15,7 @@ namespace ns3{
 
 
 		AnnotatedTopologyReader topoReader("", 1);
-		topoReader.SetFileName("/Users/Yann_ldv/Desktop/ndnSIM/ns-3/scratch/demo/demo.txt");
+		topoReader.SetFileName("scratch/demo/demo.txt");
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
