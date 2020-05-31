@@ -18,32 +18,33 @@ namespace ns3{
 		topoReader.Read();
 
 		ndn::StackHelper ndnHelper;
-		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
 
 		NodeContainer routers;
 		for(uint i = 0; i < 44; i++) {
 			routers.Add(Names::Find<Node>("Ndn"+std::to_string(i+1)));
 		}
+		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "2000");
 		ndnHelper.Install(routers);
 		
 		NodeContainer consumerNodes;
 		for (uint i = 1; i <= 5; i++) {
 			consumerNodes.Add(Names::Find<Node>("Consumer"+std::to_string(i)));
 		}
+		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "2000");
 		ndnHelper.Install(consumerNodes);
 
 		NodeContainer fogNodes;
 		for (uint i = 1; i <= 5; i++) {
 			fogNodes.Add(Names::Find<Node>("Fog"+std::to_string(i)));
 		}
-
-		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "30");
+		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "2000");
 		ndnHelper.Install(fogNodes);
 
-		ndn::StrategyChoiceHelper::InstallAll("/", "/localhost/nfd/strategy/best-route");
-		ndn::AppHelper producerHelper("ns3::ndn::Producer");
 		ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
 		ndnGlobalRoutingHelper.InstallAll();
+
+		// ndn::StrategyChoiceHelper::InstallAll("/prefix", "/localhost/nfd/strategy/best-route");
+		ndn::AppHelper producerHelper("ns3::ndn::Producer");
 
 		for (auto prd : fogNodes){
 			ndnGlobalRoutingHelper.AddOrigins("/root", prd);
@@ -55,15 +56,18 @@ namespace ns3{
 		ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
 		for(auto csm : consumerNodes){
 			consumerHelper.SetPrefix("/root");
-			consumerHelper.SetAttribute("Frequency", StringValue("60"));
-			consumerHelper.Install(csm);
+			consumerHelper.SetAttribute("Frequency", StringValue("10"));
+			ApplicationContainer app = consumerHelper.Install(csm);
+			app.Start(Seconds(1));
 		}
 
-		ndn::GlobalRoutingHelper::CalculateRoutes();		
-		ndn::AppDelayTracer::InstallAll("benchmark/out/app-delays-trace.txt");
-		ndn::CsTracer::InstallAll("benchmark/out/cs-trace.txt", Seconds(0.5));
+		ndnGlobalRoutingHelper.CalculateRoutes();		
 
 		Simulator::Stop(Seconds(50.0));
+
+		ndn::AppDelayTracer::InstallAll("benchmark/out/app-delays-trace.txt");
+		ndn::CsTracer::Install(fogNodes, "benchmark/out/cs-trace.txt", Seconds(1));
+		
 		Simulator::Run();
 		Simulator::Destroy();
 
