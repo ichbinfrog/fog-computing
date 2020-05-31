@@ -21,7 +21,7 @@ namespace ns3{
 		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "15");
 
 		NodeContainer routers;
-		for(uint i=0;i<44;i++) {
+		for(uint i = 0; i < 44; i++) {
 			routers.Add(Names::Find<Node>("Ndn"+std::to_string(i+1)));
 		}
 		ndnHelper.Install(routers);
@@ -45,11 +45,7 @@ namespace ns3{
 		ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
 		ndnGlobalRoutingHelper.InstallAll();
 
-		NodeContainer producersNodes;
-		producersNodes.Add(fogNodes);
-		producersNodes.Add(routers);
-
-		for (auto prd : producersNodes){
+		for (auto prd : fogNodes){
 			ndnGlobalRoutingHelper.AddOrigins("/root", prd);
 			producerHelper.SetPrefix("/root");
 			producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
