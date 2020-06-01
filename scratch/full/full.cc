@@ -70,7 +70,6 @@ namespace ns3 {
 		ndnHelper.SetOldContentStore("ns3::ndn::cs::Lru", "MaxSize", "2000");
         ndnHelper.Install(buffer);
 
-		ndnHelper.SetOldContentStore("ns3::ndn::cs::Nocache");
         ndnHelper.Install(frontier);
         ndnHelper.Install(consumer);
 
@@ -90,7 +89,7 @@ namespace ns3 {
 		ndn::AppHelper consumerHelper("ns3::ndn::ConsumerCbr");
 		for(auto csm : consumer){
 			consumerHelper.SetPrefix("/root");
-			consumerHelper.SetAttribute("Frequency", StringValue("5"));
+			consumerHelper.SetAttribute("Frequency", StringValue("100"));
 			ApplicationContainer app = consumerHelper.Install(csm);
 			app.Start(Seconds(1));
 		}
