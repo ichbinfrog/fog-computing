@@ -153,3 +153,4 @@ Debug/*
 #.project
 
 benchmark/out/*
+.vscode/*
