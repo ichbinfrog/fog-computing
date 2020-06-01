@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/wifi/wifi.txt");
+  topoReader.SetFileName ("scratch/tree-wifi/tree-wifi.txt");
   topoReader.Read ();
 
   // Wifi configuration
@@ -43,64 +43,74 @@ main (int argc, char *argv[])
                                  "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
 
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
-  wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());
-  mobility.Install (NodeContainer::GetGlobal ());
+  wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());  
+
   // NDN stack configuration
+  NodeContainer fog;
+  for (uint i = 1; i <= 4; i++)
+  {
+    fog.Add (Names::Find<Node> ("fog" + std::to_string (i)));
+  }
+  NodeContainer buffer;
+  for (uint i = 1; i <= 12; i++)
+  {
+    fog.Add (Names::Find<Node> ("buf" + std::to_string (i)));
+  }
+  NodeContainer frontier;
+  for (uint i = 1; i <= 20; i++)
+    {
+      fog.Add (Names::Find<Node> ("frt" + std::to_string (i)));
+    }
+  NodeContainer consumer;
+  for (uint i = 1; i <= 28; i++)
+    {
+      fog.Add (Names::Find<Node> ("csm" + std::to_string (i)));
+    }
+
   ndn::StackHelper ndnHelper;
-
-  NodeContainer routers;
-  for (uint i = 0; i < 44; i++)
-    {
-      routers.Add (Names::Find<Node> ("Ndn" + std::to_string (i + 1)));
-    }
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
-  ndnHelper.Install (routers);
+  ndnHelper.Install (fog);
+  ndnHelper.Install (buffer);
 
-  NodeContainer consumerNodes;
-  for (uint i = 1; i <= 5; i++)
-    {
-      consumerNodes.Add (Names::Find<Node> ("Consumer" + std::to_string (i)));
-    }
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
-  ndnHelper.Install (consumerNodes);
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
+  ndnHelper.Install (frontier);
+  ndnHelper.Install (consumer);
 
-  NodeContainer fogNodes;
-  for (uint i = 1; i <= 5; i++)
-    {
-      fogNodes.Add (Names::Find<Node> ("Fog" + std::to_string (i)));
-    }
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
-  ndnHelper.Install (fogNodes);
-
+  // GlobalRoutingHelper installation
   ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
   ndnGlobalRoutingHelper.InstallAll ();
 
-  // ndn::StrategyChoiceHelper::InstallAll("/prefix", "/localhost/nfd/strategy/best-route");
+  // Producer installation
+  // ------------------------
+  // All producer produce at prefix /root and with a 1024 bytes PayloadSize
   ndn::AppHelper producerHelper ("ns3::ndn::Producer");
-
-  for (auto prd : fogNodes)
+  for (auto prod : fog)
     {
-      ndnGlobalRoutingHelper.AddOrigins ("/root", prd);
+      ndnGlobalRoutingHelper.AddOrigins ("/root", prod);
       producerHelper.SetPrefix ("/root");
       producerHelper.SetAttribute ("PayloadSize", StringValue ("1024"));
-      producerHelper.Install (prd);
+      producerHelper.Install (prod);
     }
 
+  // Consumer Installation
+  // ---------------------
+  // All consumers consume at /root with frequency 1 request per 40s
   ndn::AppHelper consumerHelper ("ns3::ndn::ConsumerCbr");
-  for (auto csm : consumerNodes)
+  int i = 0;
+  for (auto csm : consumer)
     {
       consumerHelper.SetPrefix ("/root");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("50"));
+      consumerHelper.SetAttribute ("Frequency", StringValue ("10"));
       ApplicationContainer app = consumerHelper.Install (csm);
-      app.Start (Seconds (1));
+      app.Start (Seconds (1 + i * 0.1));
     }
 
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
-  Simulator::Stop (Seconds (50.0));
+  Simulator::Stop (Seconds (40.0));
 
   ndn::AppDelayTracer::InstallAll ("benchmark/out/app-delays-trace.txt");
-  ndn::CsTracer::Install (fogNodes, "benchmark/out/cs-trace.txt", Seconds (1));
+  ndn::CsTracer::InstallAll ("benchmark/out/cs-trace.txt", Seconds (1));
 
   Simulator::Run ();
   Simulator::Destroy ();

@@ -1,0 +1,294 @@
+router
+# node  	comment     yPos    xPos
+csm1	NA	0	0
+csm2	NA	0	10
+csm3	NA	0	20
+csm4	NA	0	30
+csm5	NA	0	40
+csm6	NA	0	50
+csm7	NA	0	60
+csm8	NA	0	70
+csm9	NA	10	0
+frt1	NA	10	10
+frt2	NA	10	20
+frt3	NA	10	30
+frt4	NA	10	40
+frt5	NA	10	50
+frt6	NA	10	60
+csm10	NA	10	70
+csm11	NA	20	0
+frt7	NA	20	10
+buf1	NA	20	20
+buf2	NA	20	30
+buf3	NA	20	40
+buf4	NA	20	50
+frt8	NA	20	60
+csm12	NA	20	70
+csm13	NA	30	0
+frt9	NA	30	10
+buf5	NA	30	20
+fog1	NA	30	30
+fog2	NA	30	40
+buf6	NA	30	50
+frt10	NA	30	60
+csm14	NA	30	70
+csm15	NA	40	0
+frt11	NA	40	10
+buf7	NA	40	20
+fog3	NA	40	30
+fog4	NA	40	40
+buf8	NA	40	50
+frt12	NA	40	60
+csm16	NA	40	70
+csm17	NA	50	0
+frt13	NA	50	10
+buf9	NA	50	20
+buf10	NA	50	30
+buf11	NA	50	40
+buf12	NA	50	50
+frt14	NA	50	60
+csm18	NA	50	70
+csm19	NA	60	0
+frt15	NA	60	10
+frt16	NA	60	20
+frt17	NA	60	30
+frt18	NA	60	40
+frt19	NA	60	50
+frt20	NA	60	60
+csm20	NA	60	70
+csm21	NA	70	0
+csm22	NA	70	10
+csm23	NA	70	20
+csm24	NA	70	30
+csm25	NA	70	40
+csm26	NA	70	50
+csm27	NA	70	60
+csm28	NA	70	70
+
+link
+# x 		y       capacity(kbps)  OSPF    Delay   MaxPackets
+csm1	csm9	1Mbps	1	50ms	20
+csm1	csm2	1Mbps	1	50ms	20
+csm1	frt1	1Mbps	1	50ms	20
+csm1	csm28	1Mbps	1	50ms	20
+csm2	frt1	1Mbps	1	50ms	20
+csm2	csm3	1Mbps	1	50ms	20
+csm2	frt2	1Mbps	1	50ms	20
+csm2	csm21	1Mbps	1	50ms	20
+csm3	frt2	1Mbps	1	50ms	20
+csm3	csm4	1Mbps	1	50ms	20
+csm3	frt3	1Mbps	1	50ms	20
+csm3	csm22	1Mbps	1	50ms	20
+csm4	frt3	1Mbps	1	50ms	20
+csm4	csm5	1Mbps	1	50ms	20
+csm4	frt4	1Mbps	1	50ms	20
+csm4	csm23	1Mbps	1	50ms	20
+csm5	frt4	1Mbps	1	50ms	20
+csm5	csm6	1Mbps	1	50ms	20
+csm5	frt5	1Mbps	1	50ms	20
+csm5	csm24	1Mbps	1	50ms	20
+csm6	frt5	1Mbps	1	50ms	20
+csm6	csm7	1Mbps	1	50ms	20
+csm6	frt6	1Mbps	1	50ms	20
+csm6	csm25	1Mbps	1	50ms	20
+csm7	frt6	1Mbps	1	50ms	20
+csm7	csm8	1Mbps	1	50ms	20
+csm7	csm10	1Mbps	1	50ms	20
+csm7	csm26	1Mbps	1	50ms	20
+csm8	csm10	1Mbps	1	50ms	20
+csm8	csm27	1Mbps	1	50ms	20
+csm9	csm11	1Mbps	1	50ms	20
+csm9	frt1	1Mbps	1	50ms	20
+csm9	frt7	1Mbps	1	50ms	20
+csm9	csm8	1Mbps	1	50ms	20
+frt1	frt7	1Mbps	1	50ms	20
+frt1	frt2	1Mbps	1	50ms	20
+frt1	buf1	1Mbps	1	50ms	20
+frt1	csm1	1Mbps	1	50ms	20
+frt2	buf1	1Mbps	1	50ms	20
+frt2	frt3	1Mbps	1	50ms	20
+frt2	buf2	1Mbps	1	50ms	20
+frt2	csm2	1Mbps	1	50ms	20
+frt3	buf2	1Mbps	1	50ms	20
+frt3	frt4	1Mbps	1	50ms	20
+frt3	buf3	1Mbps	1	50ms	20
+frt3	csm3	1Mbps	1	50ms	20
+frt4	buf3	1Mbps	1	50ms	20
+frt4	frt5	1Mbps	1	50ms	20
+frt4	buf4	1Mbps	1	50ms	20
+frt4	csm4	1Mbps	1	50ms	20
+frt5	buf4	1Mbps	1	50ms	20
+frt5	frt6	1Mbps	1	50ms	20
+frt5	frt8	1Mbps	1	50ms	20
+frt5	csm5	1Mbps	1	50ms	20
+frt6	frt8	1Mbps	1	50ms	20
+frt6	csm10	1Mbps	1	50ms	20
+frt6	csm12	1Mbps	1	50ms	20
+frt6	csm6	1Mbps	1	50ms	20
+csm10	csm12	1Mbps	1	50ms	20
+csm10	csm7	1Mbps	1	50ms	20
+csm11	csm13	1Mbps	1	50ms	20
+csm11	frt7	1Mbps	1	50ms	20
+csm11	frt9	1Mbps	1	50ms	20
+csm11	csm10	1Mbps	1	50ms	20
+frt7	frt9	1Mbps	1	50ms	20
+frt7	buf1	1Mbps	1	50ms	20
+frt7	buf5	1Mbps	1	50ms	20
+frt7	csm9	1Mbps	1	50ms	20
+buf1	buf5	1Mbps	1	50ms	20
+buf1	buf2	1Mbps	1	50ms	20
+buf1	fog1	1Mbps	1	50ms	20
+buf1	frt1	1Mbps	1	50ms	20
+buf2	fog1	1Mbps	1	50ms	20
+buf2	buf3	1Mbps	1	50ms	20
+buf2	fog2	1Mbps	1	50ms	20
+buf2	frt2	1Mbps	1	50ms	20
+buf3	fog2	1Mbps	1	50ms	20
+buf3	buf4	1Mbps	1	50ms	20
+buf3	buf6	1Mbps	1	50ms	20
+buf3	frt3	1Mbps	1	50ms	20
+buf4	buf6	1Mbps	1	50ms	20
+buf4	frt8	1Mbps	1	50ms	20
+buf4	frt10	1Mbps	1	50ms	20
+buf4	frt4	1Mbps	1	50ms	20
+frt8	frt10	1Mbps	1	50ms	20
+frt8	csm12	1Mbps	1	50ms	20
+frt8	csm14	1Mbps	1	50ms	20
+frt8	frt5	1Mbps	1	50ms	20
+csm12	csm14	1Mbps	1	50ms	20
+csm12	frt6	1Mbps	1	50ms	20
+csm13	csm15	1Mbps	1	50ms	20
+csm13	frt9	1Mbps	1	50ms	20
+csm13	frt11	1Mbps	1	50ms	20
+csm13	csm12	1Mbps	1	50ms	20
+frt9	frt11	1Mbps	1	50ms	20
+frt9	buf5	1Mbps	1	50ms	20
+frt9	buf7	1Mbps	1	50ms	20
+frt9	csm11	1Mbps	1	50ms	20
+buf5	buf7	1Mbps	1	50ms	20
+buf5	fog1	1Mbps	1	50ms	20
+buf5	fog3	1Mbps	1	50ms	20
+buf5	frt7	1Mbps	1	50ms	20
+fog1	fog3	1Mbps	1	50ms	20
+fog1	fog2	1Mbps	1	50ms	20
+fog1	fog4	1Mbps	1	50ms	20
+fog1	buf1	1Mbps	1	50ms	20
+fog2	fog4	1Mbps	1	50ms	20
+fog2	buf6	1Mbps	1	50ms	20
+fog2	buf8	1Mbps	1	50ms	20
+fog2	buf2	1Mbps	1	50ms	20
+buf6	buf8	1Mbps	1	50ms	20
+buf6	frt10	1Mbps	1	50ms	20
+buf6	frt12	1Mbps	1	50ms	20
+buf6	buf3	1Mbps	1	50ms	20
+frt10	frt12	1Mbps	1	50ms	20
+frt10	csm14	1Mbps	1	50ms	20
+frt10	csm16	1Mbps	1	50ms	20
+frt10	buf4	1Mbps	1	50ms	20
+csm14	csm16	1Mbps	1	50ms	20
+csm14	frt8	1Mbps	1	50ms	20
+csm15	csm17	1Mbps	1	50ms	20
+csm15	frt11	1Mbps	1	50ms	20
+csm15	frt13	1Mbps	1	50ms	20
+csm15	csm14	1Mbps	1	50ms	20
+frt11	frt13	1Mbps	1	50ms	20
+frt11	buf7	1Mbps	1	50ms	20
+frt11	buf9	1Mbps	1	50ms	20
+frt11	csm13	1Mbps	1	50ms	20
+buf7	buf9	1Mbps	1	50ms	20
+buf7	fog3	1Mbps	1	50ms	20
+buf7	buf10	1Mbps	1	50ms	20
+buf7	frt9	1Mbps	1	50ms	20
+fog3	buf10	1Mbps	1	50ms	20
+fog3	fog4	1Mbps	1	50ms	20
+fog3	buf11	1Mbps	1	50ms	20
+fog3	buf5	1Mbps	1	50ms	20
+fog4	buf11	1Mbps	1	50ms	20
+fog4	buf8	1Mbps	1	50ms	20
+fog4	buf12	1Mbps	1	50ms	20
+fog4	fog1	1Mbps	1	50ms	20
+buf8	buf12	1Mbps	1	50ms	20
+buf8	frt12	1Mbps	1	50ms	20
+buf8	frt14	1Mbps	1	50ms	20
+buf8	fog2	1Mbps	1	50ms	20
+frt12	frt14	1Mbps	1	50ms	20
+frt12	csm16	1Mbps	1	50ms	20
+frt12	csm18	1Mbps	1	50ms	20
+frt12	buf6	1Mbps	1	50ms	20
+csm16	csm18	1Mbps	1	50ms	20
+csm16	frt10	1Mbps	1	50ms	20
+csm17	csm19	1Mbps	1	50ms	20
+csm17	frt13	1Mbps	1	50ms	20
+csm17	frt15	1Mbps	1	50ms	20
+csm17	csm16	1Mbps	1	50ms	20
+frt13	frt15	1Mbps	1	50ms	20
+frt13	buf9	1Mbps	1	50ms	20
+frt13	frt16	1Mbps	1	50ms	20
+frt13	csm15	1Mbps	1	50ms	20
+buf9	frt16	1Mbps	1	50ms	20
+buf9	buf10	1Mbps	1	50ms	20
+buf9	frt17	1Mbps	1	50ms	20
+buf9	frt11	1Mbps	1	50ms	20
+buf10	frt17	1Mbps	1	50ms	20
+buf10	buf11	1Mbps	1	50ms	20
+buf10	frt18	1Mbps	1	50ms	20
+buf10	buf7	1Mbps	1	50ms	20
+buf11	frt18	1Mbps	1	50ms	20
+buf11	buf12	1Mbps	1	50ms	20
+buf11	frt19	1Mbps	1	50ms	20
+buf11	fog3	1Mbps	1	50ms	20
+buf12	frt19	1Mbps	1	50ms	20
+buf12	frt14	1Mbps	1	50ms	20
+buf12	frt20	1Mbps	1	50ms	20
+buf12	fog4	1Mbps	1	50ms	20
+frt14	frt20	1Mbps	1	50ms	20
+frt14	csm18	1Mbps	1	50ms	20
+frt14	csm20	1Mbps	1	50ms	20
+frt14	buf8	1Mbps	1	50ms	20
+csm18	csm20	1Mbps	1	50ms	20
+csm18	frt12	1Mbps	1	50ms	20
+csm19	csm21	1Mbps	1	50ms	20
+csm19	frt15	1Mbps	1	50ms	20
+csm19	csm22	1Mbps	1	50ms	20
+csm19	csm18	1Mbps	1	50ms	20
+frt15	csm22	1Mbps	1	50ms	20
+frt15	frt16	1Mbps	1	50ms	20
+frt15	csm23	1Mbps	1	50ms	20
+frt15	csm17	1Mbps	1	50ms	20
+frt16	csm23	1Mbps	1	50ms	20
+frt16	frt17	1Mbps	1	50ms	20
+frt16	csm24	1Mbps	1	50ms	20
+frt16	frt13	1Mbps	1	50ms	20
+frt17	csm24	1Mbps	1	50ms	20
+frt17	frt18	1Mbps	1	50ms	20
+frt17	csm25	1Mbps	1	50ms	20
+frt17	buf9	1Mbps	1	50ms	20
+frt18	csm25	1Mbps	1	50ms	20
+frt18	frt19	1Mbps	1	50ms	20
+frt18	csm26	1Mbps	1	50ms	20
+frt18	buf10	1Mbps	1	50ms	20
+frt19	csm26	1Mbps	1	50ms	20
+frt19	frt20	1Mbps	1	50ms	20
+frt19	csm27	1Mbps	1	50ms	20
+frt19	buf11	1Mbps	1	50ms	20
+frt20	csm27	1Mbps	1	50ms	20
+frt20	csm20	1Mbps	1	50ms	20
+frt20	csm28	1Mbps	1	50ms	20
+frt20	buf12	1Mbps	1	50ms	20
+csm20	csm28	1Mbps	1	50ms	20
+csm20	frt14	1Mbps	1	50ms	20
+csm21	csm22	1Mbps	1	50ms	20
+csm21	csm20	1Mbps	1	50ms	20
+csm22	csm23	1Mbps	1	50ms	20
+csm22	csm19	1Mbps	1	50ms	20
+csm23	csm24	1Mbps	1	50ms	20
+csm23	frt15	1Mbps	1	50ms	20
+csm24	csm25	1Mbps	1	50ms	20
+csm24	frt16	1Mbps	1	50ms	20
+csm25	csm26	1Mbps	1	50ms	20
+csm25	frt17	1Mbps	1	50ms	20
+csm26	csm27	1Mbps	1	50ms	20
+csm26	frt18	1Mbps	1	50ms	20
+csm27	csm28	1Mbps	1	50ms	20
+csm27	frt19	1Mbps	1	50ms	20
+csm28	frt20	1Mbps	1	50ms	20
