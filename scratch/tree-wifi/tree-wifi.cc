@@ -54,17 +54,17 @@ main (int argc, char *argv[])
   NodeContainer buffer;
   for (uint i = 1; i <= 12; i++)
   {
-    fog.Add (Names::Find<Node> ("buf" + std::to_string (i)));
+    buffer.Add (Names::Find<Node> ("buf" + std::to_string (i)));
   }
   NodeContainer frontier;
   for (uint i = 1; i <= 20; i++)
     {
-      fog.Add (Names::Find<Node> ("frt" + std::to_string (i)));
+      frontier.Add (Names::Find<Node> ("frt" + std::to_string (i)));
     }
   NodeContainer consumer;
   for (uint i = 1; i <= 28; i++)
     {
-      fog.Add (Names::Find<Node> ("csm" + std::to_string (i)));
+      consumer.Add (Names::Find<Node> ("csm" + std::to_string (i)));
     }
 
   ndn::StackHelper ndnHelper;
