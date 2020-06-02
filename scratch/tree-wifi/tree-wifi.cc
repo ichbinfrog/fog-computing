@@ -71,9 +71,9 @@ main (int argc, char *argv[])
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
   ndnHelper.Install (fog);
   ndnHelper.Install (buffer);
+  ndnHelper.Install (frontier);
 
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
-  ndnHelper.Install (frontier);
   ndnHelper.Install (consumer);
 
   // GlobalRoutingHelper installation
