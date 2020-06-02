@@ -72,5 +72,8 @@ def generate(layers, scale, out, dot=False):
                     if i + 1 < size and j + 1 < size:                
                         fd.write(f'"{name[i][j]}" -> "{name[i+1][j+1]}"\n')                
 
+                    if j - 1 > 0 and i + 1 < size:
+                        fd.write(f'"{name[i][j]}" -> "{name[i+1][j-1]}"\n')                
+
 if __name__ == "__main__":
-    generate(4, 10, "test_grid", False)
+    generate(4, 1, "test_grid", False)

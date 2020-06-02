@@ -41,7 +41,6 @@ main (int argc, char *argv[])
   MobilityHelper mobility;
   mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
                                  "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
-
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
   wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());  
 
@@ -58,14 +57,14 @@ main (int argc, char *argv[])
   }
   NodeContainer frontier;
   for (uint i = 1; i <= 20; i++)
-    {
-      frontier.Add (Names::Find<Node> ("frt" + std::to_string (i)));
-    }
+  {
+    frontier.Add (Names::Find<Node> ("frt" + std::to_string (i)));
+  }
   NodeContainer consumer;
   for (uint i = 1; i <= 28; i++)
-    {
-      consumer.Add (Names::Find<Node> ("csm" + std::to_string (i)));
-    }
+  {
+    consumer.Add (Names::Find<Node> ("csm" + std::to_string (i)));
+  }
 
   ndn::StackHelper ndnHelper;
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
@@ -100,9 +99,10 @@ main (int argc, char *argv[])
   for (auto csm : consumer)
     {
       consumerHelper.SetPrefix ("/root");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("10"));
+      consumerHelper.SetAttribute ("Frequency", StringValue ("20"));
       ApplicationContainer app = consumerHelper.Install (csm);
-      app.Start (Seconds (1 + i * 0.1));
+      i++;
+			app.Start(Seconds(1 + i * 1));
     }
 
   ndnGlobalRoutingHelper.CalculateRoutes ();
