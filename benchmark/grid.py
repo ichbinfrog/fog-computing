@@ -16,8 +16,9 @@ def generate(layers, scale, out, dot=False):
     var_map = {
         0 : "csm",
         1 : "frt",
-        2 : "buf",
-        3 : "fog",
+        2 : "buf0",
+        3 : "buf1",
+        4 : "fog",
     }
 
     count_map = {
@@ -25,6 +26,7 @@ def generate(layers, scale, out, dot=False):
         1 : 0,
         2 : 0,
         3 : 0,
+        4 : 0,
     }
 
     grid = generate_grid(layers)
@@ -76,4 +78,4 @@ def generate(layers, scale, out, dot=False):
                         fd.write(f'"{name[i][j]}" -> "{name[i+1][j-1]}"\n')                
 
 if __name__ == "__main__":
-    generate(4, 1, "test_grid", False)
+    generate(5, 1, "test_grid", False)
