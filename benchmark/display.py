@@ -3,6 +3,8 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
+from string import digits
+
 
 #
 #	CS TRACE
@@ -21,11 +23,35 @@ def hit_ratio(df):
 def display_hit_ratio(df):
 	"""Affiche le hit ratio en fonction du temps pour chaque noeud du réseau"""
 	newDF = hit_ratio(df)
-	node = [i for i in np.unique(df['Node'])]
-	for i in node:
-		sns.lineplot(x='Time',y='Hit_Ratio', data=newDF.loc[newDF['Node']==i])
-	plt.legend(labels=node)
+	print(newDF)
+
+	partition = []
+	remove_digits = str.maketrans('', '', digits)
+
+	for i in newDF['Node']:
+		partition.append(i.translate(remove_digits))
+	partition = np.unique(partition)
+
+
+	tmp = 0
+	for i in partition:
+		node = [j for j in newDF['Node'] if j.startswith(i)]
+		node = np.unique(node)
+		if len(node) > 0:
+			plt.figure(tmp)
+			for j in node:
+				sns.lineplot(x='Time',y='Hit_Ratio', data=newDF.loc[newDF['Node']==j])
+			plt.legend(labels=node)
+		tmp +=1
+
 	plt.show()
+
+
+#	node = [i for i in np.unique(newDF['Node'])]
+#	for i in node:
+#		sns.lineplot(x='Time',y='Hit_Ratio', data=newDF.loc[newDF['Node']==i])
+#	plt.legend(labels=node)
+#	plt.show()
 
 
 #
@@ -48,18 +74,9 @@ def display_delay(reduce_data,mean_delay):
 	num = len(mean_delay)
 	df = pd.DataFrame(data=mean_delay, columns=['Node','Mean Delay'])
 
-
-	plt.figure(figsize=(10,10))
-	grid = plt.GridSpec(num,2, wspace=0.4, hspace=0.1)
-
-	'''
-	plt.subplot(grid[0,:])
-	plt.bar(df['Node'],df['Mean Delay'])
-	'''
 	for i in range(num):
-		ax = plt.subplot(grid[i,:])
+		plt.figure(i)
 		plt.plot(reduce_data[i][1]['Time'],reduce_data[i][1]['DelayS'])
-		#ax.set_title(reduce_data[i][0])
+		plt.title(f'Consumer{i}')
 
-	plt.subplots_adjust(hspace=0.1)
 	plt.show()
