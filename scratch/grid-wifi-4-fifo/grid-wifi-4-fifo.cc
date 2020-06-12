@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/tree-wifi/tree-wifi.txt");
+  topoReader.SetFileName ("scratch/grid-wifi-4-fifo/grid-wifi-4.txt");
   topoReader.Read ();
 
   // Wifi configuration
@@ -22,6 +22,7 @@ main (int argc, char *argv[])
   WifiHelper wifi;
   wifi.SetStandard (WIFI_PHY_STANDARD_80211a);
   YansWifiChannelHelper wifiChannel;
+  // Set Wifi loss propagation rules
   wifiChannel.SetPropagationDelay ("ns3::ConstantSpeedPropagationDelayModel");
   wifiChannel.AddPropagationLoss ("ns3::ThreeLogDistancePropagationLossModel");
   wifiChannel.AddPropagationLoss ("ns3::NakagamiPropagationLossModel");
@@ -32,42 +33,54 @@ main (int argc, char *argv[])
   wifiPhyHelper.Set ("TxPowerEnd", DoubleValue (5));
 
   WifiMacHelper wifiMacHelper;
+  // AdhocWifi installations
   wifiMacHelper.SetType ("ns3::AdhocWifiMac");
 
-  Ptr<UniformRandomVariable> randomizer = CreateObject<UniformRandomVariable> ();
-  randomizer->SetAttribute ("Min", DoubleValue (10));
-  randomizer->SetAttribute ("Max", DoubleValue (100));
-
+  // Sets static wifi node
   MobilityHelper mobility;
-  mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
-                                 "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
   mobility.SetMobilityModel ("ns3::ConstantPositionMobilityModel");
+  // For moving nodes, the following code and mobility model can be uncommented
+  // Ptr<UniformRandomVariable> randomizer = CreateObject<UniformRandomVariable> ();
+  // randomizer->SetAttribute ("Min", DoubleValue (10));
+  // randomizer->SetAttribute ("Max", DoubleValue (100));
+  // mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
+  //                                "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
+
+  // Installs wifi on the global nodecontainer == all nodes declared in the file
   wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());  
 
   // NDN stack configuration
+  // Adds fog router to node container
   NodeContainer fog;
   for (uint i = 1; i <= 4; i++)
   {
     fog.Add (Names::Find<Node> ("fog" + std::to_string (i)));
   }
+  // Adds buffer nodes to node container
   NodeContainer buffer;
   for (uint i = 1; i <= 12; i++)
   {
-    buffer.Add (Names::Find<Node> ("buf" + std::to_string (i)));
+    buffer.Add (Names::Find<Node> ("buf1" + std::to_string (i)));
   }
-  NodeContainer frontier;
   for (uint i = 1; i <= 20; i++)
+  {
+    buffer.Add (Names::Find<Node> ("buf0" + std::to_string (i)));
+  }
+  // Adds frontier nodes to node container
+  NodeContainer frontier;
+  for (uint i = 1; i <= 28; i++)
   {
     frontier.Add (Names::Find<Node> ("frt" + std::to_string (i)));
   }
+  // Adds consumer nodes to node container
   NodeContainer consumer;
-  for (uint i = 1; i <= 28; i++)
+  for (uint i = 1; i <= 36; i++)
   {
     consumer.Add (Names::Find<Node> ("csm" + std::to_string (i)));
   }
 
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Fifo", "MaxSize", "2000");
   ndnHelper.Install (fog);
   ndnHelper.Install (buffer);
   ndnHelper.Install (frontier);
@@ -102,15 +115,18 @@ main (int argc, char *argv[])
       consumerHelper.SetAttribute ("Frequency", StringValue ("20"));
       ApplicationContainer app = consumerHelper.Install (csm);
       i++;
+      // Add small delay between app start
 			app.Start(Seconds(1 + i * 1));
     }
 
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
+  // Stops simulation after 40 seconds
   Simulator::Stop (Seconds (40.0));
 
-  ndn::AppDelayTracer::InstallAll ("benchmark/out/app-delays-trace.txt");
-  ndn::CsTracer::InstallAll ("benchmark/out/cs-trace.txt", Seconds (1));
+  // Installs tracers
+  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_fifo_2000.txt");
+  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_fifo_2000.txt", Seconds (1));
 
   Simulator::Run ();
   Simulator::Destroy ();

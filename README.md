@@ -181,6 +181,7 @@ Pour lire le fichier:
 // Constructeur de l'objet lecteur
 // - path : chemin du fichier (relative au workspace/absolu)
 // - scale : échelle multiplicatrice des coordonnées définies dans le fichier
+// Il est important de noter que le constructeur ne lis pas le fichier
 ns3::AnnotatedTopologyReader::AnnotatedTopologyReader	(	
         const std::string & path = "",
         double scale = 1.0 
@@ -188,9 +189,10 @@ ns3::AnnotatedTopologyReader::AnnotatedTopologyReader	(
 
 
 // Construction du lecteur
-ns3::AnnotatedTopologyReader topoReader(file_name, 1);
+ns3::AnnotatedTopologyReader topoReader("", 1);
 
 // Lis la topologie
+topoReader.SetFileName("fichier");
 topoReader.Read()
 ```
 
