@@ -2,8 +2,13 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
+import re
+import bench
 
 from string import digits
+from os import listdir
+from os.path import isfile, join, getsize
+
 
 
 #
@@ -14,44 +19,32 @@ def hit_ratio(df):
 	"""Calcul le hit ratio pour chaque noeud du réseau"""
 	hit_ratio = []
 	for i in range(0,df.shape[0],2):
+		if [df.iloc[i,1],0,0] not in hit_ratio:
+			hit_ratio.append([df.iloc[i,1],0,0])
+	for i in range(0,df.shape[0],2):
 		if df.iloc[i,3] > 0:
-			hit_ratio.append([df.iloc[i,0], df.iloc[i,1], df.iloc[i,3]/(df.iloc[i,3]+df.iloc[i+1,3])])
+			for j in hit_ratio:
+				if df.iloc[i,1]==j[0]:
+					j[1] += df.iloc[i,3]/(df.iloc[i,3]+df.iloc[i+1,3])
+					j[2] += 1
 
-	return pd.DataFrame(data=hit_ratio, columns=['Time','Node','Hit_Ratio'])
+	newDF = pd.DataFrame(data=hit_ratio, columns=['Node','Hit_Ratio','Count'])
+	newDF = newDF.loc[newDF['Count'] != 0]
+	newDF = newDF.drop(columns=['Count'])
+	return newDF.sort_values(by='Node')
 
 
-def display_hit_ratio(df):
+def display_hit_ratio(df,title):
 	"""Affiche le hit ratio en fonction du temps pour chaque noeud du réseau"""
 	newDF = hit_ratio(df)
-	print(newDF)
-
-	partition = []
-	remove_digits = str.maketrans('', '', digits)
-
-	for i in newDF['Node']:
-		partition.append(i.translate(remove_digits))
-	partition = np.unique(partition)
-
-
-	tmp = 0
-	for i in partition:
-		node = [j for j in newDF['Node'] if j.startswith(i)]
-		node = np.unique(node)
-		if len(node) > 0:
-			plt.figure(tmp)
-			for j in node:
-				sns.lineplot(x='Time',y='Hit_Ratio', data=newDF.loc[newDF['Node']==j])
-			plt.legend(labels=node)
-		tmp +=1
-
-	plt.show()
-
-
-#	node = [i for i in np.unique(newDF['Node'])]
-#	for i in node:
-#		sns.lineplot(x='Time',y='Hit_Ratio', data=newDF.loc[newDF['Node']==i])
-#	plt.legend(labels=node)
-#	plt.show()
+	if newDF.shape[0] == 0:
+		print(f'{title} is empty')
+	else:
+		sns.barplot(x='Node',y='Hit_Ratio',data=newDF)
+		plt.xticks(rotation=45)
+		f = title.replace('.txt','')
+		plt.title(f)
+		plt.savefig(f'img/{f}.png', dpi=300)
 
 
 #
@@ -61,22 +54,40 @@ def display_hit_ratio(df):
 
 def delay(df):
 	mean_delay = []
-	reduce_data = []
 	df = df.loc[df['Type']=='FullDelay']
 	for i in np.unique(df['Node']):
-		df_tmp = df.loc[df['Node']==i]
-		reduce_data.append((i,df_tmp[['Time','DelayS']]))
-		mean_delay.append((i,sum(df_tmp['DelayS'])/df_tmp.shape[0]))
-	return reduce_data, mean_delay
+		tmp = sum(df.loc[df['Node']==i,['Node','DelayS']]['DelayS'])/df.loc[df['Node']==i].shape[0]
+		mean_delay.append([i,tmp])
+	newDF = pd.DataFrame(data=mean_delay, columns=['Node','Mean Delay'])
+	return newDF.sort_values(by='Node')
 
 
-def display_delay(reduce_data,mean_delay):
-	num = len(mean_delay)
-	df = pd.DataFrame(data=mean_delay, columns=['Node','Mean Delay'])
 
-	for i in range(num):
-		plt.figure(i)
-		plt.plot(reduce_data[i][1]['Time'],reduce_data[i][1]['DelayS'])
-		plt.title(f'Consumer{i}')
+def display_delay(df,title):
+	newDF = delay(df)
+	if newDF.shape[0] == 0:
+		print(f'{title} is empty')
+	else:
+		sns.barplot(x='Node',y='Mean Delay',data=newDF)
+		plt.xticks(rotation=45)
+		f = title.replace('.txt','')
+		plt.title(f)
+		plt.savefig(f'img/{f}.png',dpi=300)
 
-	plt.show()
+
+if __name__ == '__main__':
+	onlyfiles = [f for f in listdir('out/') if isfile(join('out/', f))]
+	app_grid = [f for f in onlyfiles if re.search('app_grid',f)]
+	cs_grid = [f for f in onlyfiles if re.search('cs_grid',f)]
+	
+	for i in cs_grid:
+		cs = bench.ContentStore([f'out/{i}'])
+		display_hit_ratio(cs.data_,i)
+
+	for i in app_grid:
+		if getsize(f'out/{i}') != 0:
+			cs = bench.ContentStore([f'out/{i}'])
+			display_delay(cs.data_,i)
+
+
+
