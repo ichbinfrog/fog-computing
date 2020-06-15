@@ -19,19 +19,10 @@ def hit_ratio(df):
 	"""Calcul le hit ratio pour chaque noeud du réseau"""
 	hit_ratio = []
 	for i in range(0,df.shape[0],2):
-		if [df.iloc[i,1],0,0] not in hit_ratio:
-			hit_ratio.append([df.iloc[i,1],0,0])
-	for i in range(0,df.shape[0],2):
 		if df.iloc[i,3] > 0:
-			for j in hit_ratio:
-				if df.iloc[i,1]==j[0]:
-					j[1] += df.iloc[i,3]/(df.iloc[i,3]+df.iloc[i+1,3])
-					j[2] += 1
-
-	newDF = pd.DataFrame(data=hit_ratio, columns=['Node','Hit_Ratio','Count'])
-	newDF = newDF.loc[newDF['Count'] != 0]
-	newDF = newDF.drop(columns=['Count'])
-	return newDF.sort_values(by='Node')
+			hit_ratio.append([df.iloc[i,0],df.iloc[i,1],df.iloc[i,3]/(df.iloc[i,3]+df.iloc[i+1,3])])
+	return pd.DataFrame(data=hit_ratio, columns=['Time','Node','Hit Ratio'])
+	
 
 
 def display_hit_ratio(df,title):
@@ -40,11 +31,12 @@ def display_hit_ratio(df,title):
 	if newDF.shape[0] == 0:
 		print(f'{title} is empty')
 	else:
-		sns.barplot(x='Node',y='Hit_Ratio',data=newDF)
-		plt.xticks(rotation=45)
+		sns.lineplot(x='Time',y='Hit Ratio',hue='Node', data=newDF)
 		f = title.replace('.txt','')
 		plt.title(f)
-		plt.savefig(f'img/{f}.png', dpi=300)
+		plt.legend(loc='lower right', ncol=1, fontsize='xx-small', fancybox=True, shadow=True)
+		plt.show()
+		#fig.savefig(f'img/{f}.png', dpi=plt.gcf().dpi)
 
 
 #
@@ -55,12 +47,9 @@ def display_hit_ratio(df,title):
 def delay(df):
 	mean_delay = []
 	df = df.loc[df['Type']=='FullDelay']
-	for i in np.unique(df['Node']):
-		tmp = sum(df.loc[df['Node']==i,['Node','DelayS']]['DelayS'])/df.loc[df['Node']==i].shape[0]
-		mean_delay.append([i,tmp])
-	newDF = pd.DataFrame(data=mean_delay, columns=['Node','Mean Delay'])
-	return newDF.sort_values(by='Node')
-
+	for i in range(df.shape[0]):
+		mean_delay.append([df.iloc[i,0],df.iloc[i,1],df.iloc[i,5]])
+	return pd.DataFrame(data=mean_delay, columns=['Time','Node', 'Delay'])
 
 
 def display_delay(df,title):
@@ -68,11 +57,12 @@ def display_delay(df,title):
 	if newDF.shape[0] == 0:
 		print(f'{title} is empty')
 	else:
-		sns.barplot(x='Node',y='Mean Delay',data=newDF)
-		plt.xticks(rotation=45)
+		sns.lineplot(x='Time',y='Delay', hue='Node', data=newDF)
 		f = title.replace('.txt','')
 		plt.title(f)
-		plt.savefig(f'img/{f}.png',dpi=300)
+		plt.legend(loc='lower right', ncol=1, fontsize='xx-small', fancybox=True, shadow=True)
+		plt.show()
+		#fig.savefig(f'img/{f}.png',dpi=plt.gcf().dpi)
 
 
 if __name__ == '__main__':
