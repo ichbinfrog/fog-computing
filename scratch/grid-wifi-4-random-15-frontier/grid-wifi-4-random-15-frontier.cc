@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/grid-wifi-3-random/grid-wifi-3.txt");
+  topoReader.SetFileName ("scratch/grid-wifi-4-random-15-frontier/grid-wifi-4.txt");
   topoReader.Read ();
 
   // Wifi configuration
@@ -43,11 +43,12 @@ main (int argc, char *argv[])
   // Ptr<UniformRandomVariable> randomizer = CreateObject<UniformRandomVariable> ();
   // randomizer->SetAttribute ("Min", DoubleValue (10));
   // randomizer->SetAttribute ("Max", DoubleValue (100));
+
   // mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
   //                                "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
 
   // Installs wifi on the global nodecontainer == all nodes declared in the file
-  wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());
+  wifi.Install (wifiPhyHelper, wifiMacHelper, NodeContainer::GetGlobal ());  
 
   // NDN stack configuration
   // Adds fog router to node container
@@ -56,32 +57,36 @@ main (int argc, char *argv[])
   {
     fog.Add (Names::Find<Node> ("fog" + std::to_string (i)));
   }
-  NodeContainer buffer;
   // Adds buffer nodes to node container
+  NodeContainer buffer;
   for (uint i = 1; i <= 12; i++)
   {
-    buffer.Add (Names::Find<Node> ("buf" + std::to_string (i)));
+    buffer.Add (Names::Find<Node> ("buf1" + std::to_string (i)));
+  }
+  for (uint i = 1; i <= 20; i++)
+  {
+    buffer.Add (Names::Find<Node> ("buf0" + std::to_string (i)));
   }
   // Adds frontier nodes to node container
   NodeContainer frontier;
-  for (uint i = 1; i <= 20; i++)
+  for (uint i = 1; i <= 28; i++)
   {
     frontier.Add (Names::Find<Node> ("frt" + std::to_string (i)));
   }
   // Adds consumer nodes to node container
   NodeContainer consumer;
-  for (uint i = 1; i <= 28; i++)
+  for (uint i = 1; i <= 36; i++)
   {
     consumer.Add (Names::Find<Node> ("csm" + std::to_string (i)));
   }
 
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Random", "MaxSize", "2000");
-  ndnHelper.Install (fog);
-  ndnHelper.Install (buffer);
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Fifo", "MaxSize", "15");
   ndnHelper.Install (frontier);
 
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
+  ndnHelper.Install (fog);
+  ndnHelper.Install (buffer);
   ndnHelper.Install (consumer);
 
   // GlobalRoutingHelper installation
@@ -108,18 +113,21 @@ main (int argc, char *argv[])
   for (auto csm : consumer)
     {
       consumerHelper.SetPrefix ("/root");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("100"));
+      consumerHelper.SetAttribute ("Frequency", StringValue ("20"));
       ApplicationContainer app = consumerHelper.Install (csm);
       i++;
+      // Add small delay between app start
 			app.Start(Seconds(1 + i * 1));
     }
 
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
-  Simulator::Stop (Seconds (60.0));
+  // Stops simulation after 40 seconds
+  Simulator::Stop (Seconds (5.0));
 
-  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_3layers_random_2000.txt");
-  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_3layers_random_2000.txt", Seconds (1));
+  // Installs tracers
+  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_random_15_frontier.txt");
+  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_random_15_frontier.txt", Seconds (1));
 
   Simulator::Run ();
   Simulator::Destroy ();

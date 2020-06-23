@@ -81,7 +81,7 @@ main (int argc, char *argv[])
   }
 
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Fifo", "MaxSize", "2000");
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Fifo", "MaxSize", "15");
   ndnHelper.Install (fog);
   ndnHelper.Install (buffer);
   ndnHelper.Install (frontier);
@@ -126,8 +126,8 @@ main (int argc, char *argv[])
   Simulator::Stop (Seconds (5.0));
 
   // Installs tracers
-  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_random_2000.txt");
-  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_random_2000.txt", Seconds (1));
+  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_random_15.txt");
+  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_random_15.txt", Seconds (1));
 
   Simulator::Run ();
   Simulator::Destroy ();

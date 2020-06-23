@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/grid-wifi-3-lru/grid-wifi-3.txt");
+  topoReader.SetFileName ("scratch/grid-wifi-3-lfu-15-frontier/grid-wifi-3.txt");
   topoReader.Read ();
 
   // Wifi configuration
@@ -43,6 +43,7 @@ main (int argc, char *argv[])
   // Ptr<UniformRandomVariable> randomizer = CreateObject<UniformRandomVariable> ();
   // randomizer->SetAttribute ("Min", DoubleValue (10));
   // randomizer->SetAttribute ("Max", DoubleValue (100));
+
   // mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
   //                                "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
 
@@ -76,12 +77,12 @@ main (int argc, char *argv[])
   }
 
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "2000");
-  ndnHelper.Install (fog);
-  ndnHelper.Install (buffer);
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lfu", "MaxSize", "15");
   ndnHelper.Install (frontier);
 
   ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
+  ndnHelper.Install (fog);
+  ndnHelper.Install (buffer);
   ndnHelper.Install (consumer);
 
   // GlobalRoutingHelper installation
@@ -118,9 +119,8 @@ main (int argc, char *argv[])
 
   Simulator::Stop (Seconds (60.0));
 
-  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_3layers_lru_2000.txt");
-  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_3layers_lru_2000.txt", Seconds (1));
-
+  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_3layers_lfu_15_frontier.txt");
+  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_3layers_lfu_15_frontier.txt", Seconds (1));
   Simulator::Run ();
   Simulator::Destroy ();
 
