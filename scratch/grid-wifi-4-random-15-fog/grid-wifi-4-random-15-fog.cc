@@ -43,6 +43,7 @@ main (int argc, char *argv[])
   // Ptr<UniformRandomVariable> randomizer = CreateObject<UniformRandomVariable> ();
   // randomizer->SetAttribute ("Min", DoubleValue (10));
   // randomizer->SetAttribute ("Max", DoubleValue (100));
+
   // mobility.SetPositionAllocator ("ns3::RandomBoxPositionAllocator", "X", PointerValue (randomizer),
   //                                "Y", PointerValue (randomizer), "Z", PointerValue (randomizer));
 
@@ -80,14 +81,14 @@ main (int argc, char *argv[])
   }
 
   ndn::StackHelper ndnHelper;
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Lru", "MaxSize", "15");
-  ndnHelper.Install (frontier);
-
-  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Fifo", "MaxSize", "15");
   ndnHelper.Install (fog);
   ndnHelper.Install (buffer);
-  ndnHelper.Install (consumer);
 
+  ndnHelper.SetOldContentStore ("ns3::ndn::cs::Nocache");
+  ndnHelper.Install (consumer);
+  ndnHelper.Install (frontier);
+  
   // GlobalRoutingHelper installation
   ndn::GlobalRoutingHelper ndnGlobalRoutingHelper;
   ndnGlobalRoutingHelper.InstallAll ();
@@ -122,11 +123,11 @@ main (int argc, char *argv[])
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
   // Stops simulation after 40 seconds
-  Simulator::Stop (Seconds (40.0));
+  Simulator::Stop (Seconds (5.0));
 
   // Installs tracers
-  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_lru_15_frontier.txt");
-  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_lru_15_frontier.txt", Seconds (1));
+  ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_random_15_fog.txt");
+  ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_random_15_fog.txt", Seconds (1));
 
   Simulator::Run ();
   Simulator::Destroy ();

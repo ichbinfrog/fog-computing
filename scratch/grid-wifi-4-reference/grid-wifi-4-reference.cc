@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/grid-wifi-4-random-no-cache/grid-wifi-4.txt");
+  topoReader.SetFileName ("scratch/grid-wifi-4.txt");
   topoReader.Read ();
 
   // Wifi configuration

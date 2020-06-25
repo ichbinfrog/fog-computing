@@ -13,7 +13,7 @@ main (int argc, char *argv[])
   cmd.Parse (argc, argv);
   
   AnnotatedTopologyReader topoReader ("", 1);
-  topoReader.SetFileName ("scratch/grid-wifi-3-lru-15-frontier/grid-wifi-3.txt");
+  topoReader.SetFileName ("scratch/grid-wifi-3.txt");
   topoReader.Read ();
 
   // Wifi configuration
