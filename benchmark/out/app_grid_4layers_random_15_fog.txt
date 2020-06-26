@@ -1,0 +1,3 @@
+Time	Node	AppId	SeqNo	Type	DelayS	DelayUS	RetxCount	HopCount
+2.30167	csm1	0	6	LastDelay	0.00167158	1671.58	1	1
+2.30167	csm1	0	6	FullDelay	0.00167158	1671.58	1	1

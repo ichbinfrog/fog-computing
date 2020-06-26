@@ -153,5 +153,4 @@ Debug/*
 #.project
 
 benchmark/.ipynb_checkpoints/*
-benchmark/out/*
 .vscode/*
