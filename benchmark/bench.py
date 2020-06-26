@@ -14,6 +14,8 @@ def split_cache(x):
         return "lfu"
     elif "random" in x:
         return "random"
+    elif "fifo" in x:
+        return "fifo"
     elif "reference" in x:
         return "reference"
     
@@ -55,6 +57,7 @@ class ContentStore(Reader):
         self.data_["Cache"] = self.data_["source"].apply((lambda x: split_cache(x)))
         self.data_["CacheCapacity"] = self.data_["source"].apply((lambda x: split_capacity(x)))
         self.data_["CacheStrategy"] = self.data_["source"].apply((lambda x: split_type(x)))
+        self.data_["Layers"] =  self.data_["source"].apply((lambda x: split_layers(x)))
 
 class AppDelay(Reader):
     """Implémentation du Reader pour les AppDelay Tracer"""
@@ -73,3 +76,4 @@ class AppDelay(Reader):
         self.data_["Cache"] = self.data_["source"].apply((lambda x: split_cache(x)))
         self.data_["CacheCapacity"] = self.data_["source"].apply((lambda x: split_capacity(x)))
         self.data_["CacheStrategy"] = self.data_["source"].apply((lambda x: split_type(x)))
+        self.data_["Layers"] =  self.data_["source"].apply((lambda x: split_layers(x)))
