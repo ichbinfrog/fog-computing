@@ -113,7 +113,7 @@ main (int argc, char *argv[])
   for (auto csm : consumer)
     {
       consumerHelper.SetPrefix ("/root");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("20"));
+      consumerHelper.SetAttribute ("Frequency", StringValue ("30"));
       ApplicationContainer app = consumerHelper.Install (csm);
       i++;
       // Add small delay between app start
@@ -123,8 +123,7 @@ main (int argc, char *argv[])
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
   // Stops simulation after 40 seconds
-  Simulator::Stop (Seconds (5.0));
-
+  Simulator::Stop (Seconds (15.0));
   // Installs tracers
   ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_4layers_random_15_frontier.txt");
   ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_4layers_random_15_frontier.txt", Seconds (1));
