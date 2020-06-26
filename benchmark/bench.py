@@ -32,6 +32,8 @@ def split_layers(x):
 def split_type(x):
     if "frontier" in x:
         return "frontier"
+    elif "fog" in x:
+        return "fog"
     else:
         return "everywhere"
 
