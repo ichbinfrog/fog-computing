@@ -109,7 +109,7 @@ main (int argc, char *argv[])
   for (auto csm : consumer)
     {
       consumerHelper.SetPrefix ("/root");
-      consumerHelper.SetAttribute ("Frequency", StringValue ("100"));
+      consumerHelper.SetAttribute ("Frequency", StringValue ("30"));
       ApplicationContainer app = consumerHelper.Install (csm);
       i++;
 			app.Start(Seconds(1 + i * 1));
@@ -117,7 +117,7 @@ main (int argc, char *argv[])
 
   ndnGlobalRoutingHelper.CalculateRoutes ();
 
-  Simulator::Stop (Seconds (60.0));
+  Simulator::Stop (Seconds (15.0));
 
   ndn::AppDelayTracer::InstallAll ("benchmark/out/app_grid_3layers_fifo_15_frontier.txt");
   ndn::CsTracer::InstallAll ("benchmark/out/cs_grid_3layers_fifo_15_frontier.txt", Seconds (1));
